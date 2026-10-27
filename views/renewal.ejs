@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>OrgPort | Organization Renewal Form</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        :root {
+            --pink: #ff3cac;
+            --hot-pink: #ff1493;
+            --purple: #a855f7;
+            --dark: #130b20;
+            --panel: #20132e;
+            --muted: #b8a8c9;
+            --white: #fff8ff;
+            --border: rgba(255,255,255,0.09);
+        }
+
+        body {
+            min-height: 100vh;
+            background: var(--dark);
+            color: var(--white);
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before,
+        body::after {
+            content: "";
+            position: fixed;
+            width: 350px;
+            height: 350px;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.16;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        body::before {
+            background: var(--pink);
+            top: -150px;
+            right: -50px;
+        }
+
+        body::after {
+            background: var(--purple);
+            bottom: -150px;
+            left: -50px;
+        }
+
+        /* SIDEBAR */
+
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 28px 18px;
+            display: flex;
+            flex-direction: column;
+            background: rgba(24, 13, 35, 0.97);
+            border-right: 1px solid var(--border);
+            z-index: 10;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 42px;
+            padding: 0 8px;
+        }
+
+        .logo-icon {
+            width: 43px;
+            height: 43px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 13px;
+            background: linear-gradient(135deg, var(--pink), var(--purple));
+            box-shadow: 0 0 22px rgba(255,60,172,0.25);
+            font-size: 22px;
+        }
+
+        .logo-text {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 900;
+            font-size: 19px;
+            line-height: 1.2;
+        }
+
+        .logo-text span {
+            color: #ff70c5;
+        }
+
+        .nav-label {
+            color: #806d91;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            padding: 0 12px;
+            margin-bottom: 12px;
+        }
+
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 13px;
+            margin-bottom: 8px;
+            text-decoration: none;
+            color: #c6b5d5;
+            border: 1px solid transparent;
+            border-radius: 11px;
+            font-size: 13px;
+            font-weight: 600;
+            transition: 0.25s;
+        }
+
+        .sidebar a:hover {
+            color: #fff;
+            background: rgba(255,60,172,0.07);
+            border-color: rgba(255,60,172,0.12);
+        }
+
+        .sidebar a.active {
+            color: #ff85cc;
+            background: linear-gradient(
+                100deg,
+                rgba(255,60,172,0.14),
+                rgba(168,85,247,0.09)
+            );
+            border-color: rgba(255,60,172,0.22);
+        }
+
+        .logout {
+            margin-top: auto;
+        }
+
+        /* TOPBAR */
+
+        .topbar {
+            margin-left: 250px;
+            min-height: 75px;
+            padding: 15px 35px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            background: rgba(19,11,32,0.8);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #e9d9f5;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .user-icon {
+            width: 38px;
+            height: 38px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--pink), var(--purple));
+            font-size: 18px;
+        }
+
+        /* MAIN CONTENT */
+
+        .main {
+            margin-left: 250px;
+            padding: 35px;
+        }
+
+        .page-heading {
+            margin-bottom: 28px;
+        }
+
+        .eyebrow {
+            display: inline-block;
+            padding: 8px 13px;
+            background: rgba(255,60,172,0.1);
+            border: 1px solid rgba(255,60,172,0.25);
+            border-radius: 30px;
+            color: #ff85cc;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        h1 {
+            font-size: clamp(28px, 4vw, 38px);
+            font-weight: 900;
+            letter-spacing: -1px;
+            margin-bottom: 10px;
+        }
+
+        .gradient-text {
+            background: linear-gradient(90deg, #ff3cac, #c4b5fd);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .subtitle {
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        /* FORM CONTAINER */
+
+        .form-container {
+            width: 100%;
+            max-width: 1000px;
+            background: rgba(32,19,46,0.94);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 32px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.15);
+        }
+
+        .section-heading {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            margin-bottom: 26px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .section-icon {
+            width: 43px;
+            height: 43px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 13px;
+            background: rgba(255,60,172,0.12);
+            border: 1px solid rgba(255,60,172,0.2);
+            font-size: 20px;
+        }
+
+        .section-heading h2 {
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        .section-heading p {
+            color: #9885aa;
+            font-size: 11px;
+            margin-top: 4px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 22px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 9px;
+            min-width: 0;
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            color: #e9d9f5;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        label .required {
+            color: #ff70c5;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 13px 14px;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px;
+            background: rgba(255,255,255,0.035);
+            color: var(--white);
+            font-size: 13px;
+            outline: none;
+            transition: 0.25s;
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+            color: #83718f;
+        }
+
+        select {
+            color-scheme: dark;
+        }
+
+        select option {
+            background: #20132e;
+            color: #fff8ff;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: var(--pink);
+            box-shadow: 0 0 0 3px rgba(255,60,172,0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 110px;
+            line-height: 1.7;
+        }
+
+        /* REMINDER NOTE */
+
+        .note {
+            display: flex;
+            align-items: flex-start;
+            gap: 13px;
+            margin-top: 28px;
+            padding: 18px;
+            background: linear-gradient(
+                100deg,
+                rgba(255,60,172,0.09),
+                rgba(139,92,246,0.08)
+            );
+            border: 1px solid rgba(255,60,172,0.19);
+            border-radius: 13px;
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.8;
+        }
+
+        .note-icon {
+            flex-shrink: 0;
+            font-size: 20px;
+        }
+
+        .note strong {
+            color: #ff85cc;
+        }
+
+        /* CHECKBOX */
+
+        .checkbox {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-top: 24px;
+            color: #cbb9d9;
+            font-size: 12px;
+            line-height: 1.8;
+            cursor: pointer;
+        }
+
+        .checkbox input {
+            appearance: none;
+            -webkit-appearance: none;
+            flex-shrink: 0;
+            width: 18px;
+            height: 18px;
+            padding: 0;
+            margin-top: 2px;
+            border: 1px solid #79518d;
+            border-radius: 5px;
+            background: rgba(255,255,255,0.04);
+            cursor: pointer;
+        }
+
+        .checkbox input:checked {
+            background: linear-gradient(135deg, var(--pink), var(--purple));
+            border-color: var(--pink);
+        }
+
+        .checkbox input:checked::after {
+            content: "✓";
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            color: white;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .checkbox input:focus-visible {
+            outline: 2px solid var(--pink);
+            outline-offset: 3px;
+        }
+
+        /* BUTTONS */
+
+        .buttons {
+            display: flex;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 30px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+        }
+
+        .btn {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            gap: 9px;
+            padding: 14px 22px;
+            border: 1px solid transparent;
+            border-radius: 11px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 800;
+            transition: 0.25s;
+        }
+
+        .cancel {
+            color: #e5d8ef;
+            background: rgba(255,255,255,0.04);
+            border-color: var(--border);
+        }
+
+        .cancel:hover {
+            background: rgba(255,255,255,0.08);
+            transform: translateY(-2px);
+        }
+
+        .submit {
+            color: white;
+            background: linear-gradient(100deg, #ff1493, #a855f7);
+            box-shadow: 0 7px 24px rgba(255,20,147,0.2);
+        }
+
+        .submit:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(255,20,147,0.35);
+        }
+
+        footer {
+            margin-left: 250px;
+            padding: 25px 15px;
+            text-align: center;
+            color: #796987;
+            font-size: 10px;
+            letter-spacing: 0.5px;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 850px) {
+            .sidebar {
+                width: 220px;
+            }
+
+            .topbar,
+            .main,
+            footer {
+                margin-left: 220px;
+            }
+
+            .main {
+                padding: 25px 20px;
+            }
+
+            .form-container {
+                padding: 25px;
+            }
+        }
+
+        @media (max-width: 650px) {
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+                padding: 20px 15px;
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+            }
+
+            .logo {
+                margin-bottom: 22px;
+            }
+
+            .nav-label {
+                margin-top: 5px;
+            }
+
+            .sidebar a {
+                padding: 12px;
+            }
+
+            .logout {
+                margin-top: 8px;
+            }
+
+            .topbar,
+            .main,
+            footer {
+                margin-left: 0;
+            }
+
+            .topbar {
+                min-height: 60px;
+                padding: 12px 18px;
+            }
+
+            .main {
+                padding: 25px 15px;
+            }
+
+            .form-container {
+                padding: 22px 18px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 18px;
+            }
+
+            .full-width {
+                grid-column: auto;
+            }
+
+            .buttons {
+                flex-direction: column-reverse;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                transition: none !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <aside class="sidebar">
+
+        <div class="logo">
+            <div class="logo-icon">✦</div>
+
+            <div class="logo-text">
+                ORG<span>PORT</span>
+            </div>
+        </div>
+
+        <div class="nav-label">MAIN MENU</div>
+
+        <a href="/dashboard?email=<%= encodeURIComponent(email) %>">
+            ← Back to Dashboard
+        </a>
+
+        <a href="/renewal?email=<%= encodeURIComponent(email) %>" class="active">
+            <span>✧</span> Renewal Form
+        </a>
+
+        <a href="/status?email=<%= encodeURIComponent(email) %>">
+            <span>◷</span> Application Status
+        </a>
+
+        <a href="/logout" class="logout">
+            <span>↪</span> Logout
+        </a>
+
+    </aside>
+
+    <header class="topbar">
+        <div class="user-profile">
+            <div class="user-icon">👤</div>
+            <strong>Org Member Renewal</strong>
+        </div>
+    </header>
+
+    <main class="main">
+
+        <div class="page-heading">
+            <div class="eyebrow">✦ ORGANIZATION REGISTRATION</div>
+
+            <h1>
+                Organization <span class="gradient-text">Renewal Form</span>
+            </h1>
+
+            <p class="subtitle">
+                Fill out the form to renew your organization's registration.
+                Please check your information before submitting.
+            </p>
+        </div>
+
+        <div class="form-container">
+
+            <div class="section-heading">
+                <div class="section-icon">📋</div>
+
+                <div>
+                    <h2>Organization Information</h2>
+                    <p>Complete all required fields marked with *</p>
+                </div>
+            </div>
+
+            <form action="/renewal?email=<%= encodeURIComponent(email) %>" method="POST">
+                <input type="hidden" name="account_email" value="<%= email %>">
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+                        <label for="fullname">
+                            Full Name <span class="required">*</span>
+                        </label>
+
+                        <input
+                            type="text"
+                            id="fullname"
+                            name="fullname"
+                            maxlength="100"
+                            required
+                            placeholder="Enter your full name">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="year_level">
+                            Year Level <span class="required">*</span>
+                        </label>
+
+                        <select id="year_level" name="year_level" required>
+                            <option value="">Select year level</option>
+                            <option value="1st Year">1st Year</option>
+                            <option value="2nd Year">2nd Year</option>
+                            <option value="3rd Year">3rd Year</option>
+                            <option value="4th Year">4th Year</option>
+                        </select>
+                    </div>
+
+                   
+                    <div class="form-group">
+                        <label for="org_name">
+                            Organization Name <span class="required">*</span>
+                        </label>
+
+                        <select id="org_name" name="org_name" required>
+                            <option value="">Select your organization</option>
+                            <option value="XCite">XCite</option>
+                            <option value="Cite Council">Cite Council</option>
+                            <option value="CiteMass">CiteMass</option>
+                            <option value="F1">F1</option>
+                        </select>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="org_type">
+                            Organization Type <span class="required">*</span>
+                        </label>
+
+                        <select id="org_type" name="org_type" required>
+                            <option value="">Select type</option>
+                            <option value="Leadership">Leadership</option>
+                            <option value="Academic">Academic</option>
+                            <option value="Dance School">Dance School</option>
+                            <option value="Artist">Artist</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="president">President's Name</label>
+
+                        <input
+                            type="text"
+                            id="president"
+                            name="president"
+                            maxlength="100"
+                            placeholder="Enter president's name">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="adviser">Adviser's Name</label>
+
+                        <input
+                            type="text"
+                            id="adviser"
+                            name="adviser"
+                            maxlength="100"
+                            placeholder="Enter adviser's name">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contact_email">Contact Email</label>
+
+                        <input
+                            type="email"
+                            id="contact_email"
+                            name="contact_email"
+                            maxlength="150"
+                            placeholder="Enter contact email">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="school_year">
+                            School Year <span class="required">*</span>
+                        </label>
+
+                        <select id="school_year" name="school_year" required>
+                            <option value="">Select school year</option>
+                            <option value="2026-2027">2026-2027</option>
+                            <option value="2027-2028">2027-2028</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="objectives">
+                            Organization Objectives <span class="required">*</span>
+                        </label>
+
+                        <textarea
+                            id="objectives"
+                            name="objectives"
+                            required
+                            placeholder="Describe your organization's goals and activities"></textarea>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="achievements">
+                            Accomplishments from Previous Year
+                        </label>
+
+                        <textarea
+                            id="achievements"
+                            name="achievements"
+                            placeholder="List your organization's accomplishments"></textarea>
+                    </div>
+
+                </div>
+
+                <div class="note">
+                    <div class="note-icon">💌</div>
+
+                    <div>
+                        <strong>Renewal Reminder</strong><br>
+                        Submit the required documents, such as your updated
+                        list of officers and annual accomplishment report,
+                        if required by your school.
+                    </div>
+                </div>
+
+                <label class="checkbox">
+                    <input
+                        type="checkbox"
+                        name="confirm"
+                        value="yes"
+                        required>
+
+                    <span>
+                        I confirm that the information provided is correct
+                        and that our organization will follow the school's policies.
+                    </span>
+                </label>
+
+                <a href="/dashboard?email=<%= encodeURIComponent(email) %>" class="btn cancel">
+                    ← Cancel
+                </a>
+
+                    <button type="submit" class="btn submit">
+                        📝 Submit Renewal ↗
+                    </button>
+                </div>
+
+            </form>
+        </div>
+
+    </main>
+
+    <footer>
+        © 2026 ORGPORT · BUILT FOR THE BOLD ✦
+    </footer>
+
+</body>
+</html>

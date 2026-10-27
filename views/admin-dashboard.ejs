@@ -1,0 +1,1220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OrgPort | Admin Dashboard</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg: #130b20;
+            --panel: #1d122b;
+            --panel-light: #251633;
+            --pink: #ff3cac;
+            --purple: #a855f7;
+            --text: #f8f1ff;
+            --muted: #b7a8c7;
+            --border: rgba(255,255,255,0.09);
+        }
+
+        body {
+            min-height: 100vh;
+            background:
+                radial-gradient(ellipse at 10% 0%, rgba(168,85,247,.15), transparent 35%),
+                radial-gradient(ellipse at 95% 20%, rgba(255,60,172,.11), transparent 32%),
+                var(--bg);
+            color: var(--text);
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        button, input, select, textarea {
+            font: inherit;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .topbar {
+            min-height: 78px;
+            padding: 18px 5%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+            border-bottom: 1px solid var(--border);
+            background: rgba(19,11,32,.8);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-icon {
+            width: 42px;
+            height: 42px;
+            display: grid;
+            place-items: center;
+            border-radius: 13px;
+            background: linear-gradient(135deg, var(--pink), var(--purple));
+            color: white;
+            font-size: 23px;
+            font-weight: 800;
+        }
+
+        .brand-name {
+            font: 800 22px 'Outfit', sans-serif;
+            letter-spacing: 1px;
+        }
+
+        .brand-name span {
+            color: var(--pink);
+        }
+
+        .brand-subtitle {
+            color: var(--muted);
+            font-size: 11px;
+            margin-top: 2px;
+        }
+
+        .logout {
+            padding: 10px 18px;
+            border: 1px solid rgba(255,60,172,.35);
+            border-radius: 9px;
+            color: #ffb3df;
+            font-size: 13px;
+            font-weight: 700;
+            transition: .2s;
+        }
+
+        .logout:hover {
+            background: rgba(255,60,172,.12);
+            border-color: var(--pink);
+        }
+
+        .container {
+            max-width: 1500px;
+            margin: 0 auto;
+            padding: 38px 5%;
+        }
+
+        .eyebrow {
+            color: var(--pink);
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 2px;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        .welcome {
+            margin-bottom: 28px;
+        }
+
+        .welcome h1 {
+            font: 800 clamp(28px, 4vw, 40px) 'Outfit', sans-serif;
+            margin-bottom: 8px;
+        }
+
+        .gradient-text {
+            background: linear-gradient(90deg, var(--pink), var(--purple));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .welcome p {
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        /* OVERALL STATISTICS */
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(145deg, var(--panel-light), var(--panel));
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 22px;
+        }
+
+        .stat-card p {
+            color: var(--muted);
+            font-size: 13px;
+            margin-bottom: 12px;
+        }
+
+        .stat-card h2 {
+            font: 800 32px 'Outfit', sans-serif;
+        }
+
+        /* ORGANIZATION CARDS */
+
+        .section-title {
+            font: 700 24px 'Outfit', sans-serif;
+            margin-bottom: 7px;
+        }
+
+        .section-description {
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.7;
+            margin-bottom: 22px;
+        }
+
+        .organization-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 22px;
+        }
+
+        .organization-card {
+            min-width: 0;
+            background: linear-gradient(145deg, rgba(37,22,51,.98), rgba(29,18,43,.98));
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+            transition: .2s;
+        }
+
+        .organization-card:hover {
+            border-color: rgba(168,85,247,.55);
+        }
+
+        .organization-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 22px;
+        }
+
+        .organization-header h2 {
+            font: 800 24px 'Outfit', sans-serif;
+            margin-bottom: 5px;
+        }
+
+        .organization-header p {
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .org-icon {
+            width: 48px;
+            height: 48px;
+            flex-shrink: 0;
+            display: grid;
+            place-items: center;
+            border-radius: 13px;
+            background: linear-gradient(135deg, rgba(255,60,172,.18), rgba(168,85,247,.2));
+            color: #f3c4ff;
+            font-size: 23px;
+        }
+
+        .org-counts {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px;
+            margin-bottom: 24px;
+        }
+
+        .org-count {
+            min-width: 0;
+            padding: 14px 10px;
+            background: rgba(255,255,255,.035);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+        }
+
+        /* CLICKABLE STATUS BOXES */
+
+        .clickable-count {
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        .clickable-count:hover {
+            transform: translateY(-3px);
+            background: rgba(168,85,247,.14);
+            border-color: var(--purple);
+        }
+
+        .clickable-count:focus-visible {
+            outline: 2px solid var(--pink);
+            outline-offset: 3px;
+        }
+
+        .org-count span {
+            display: block;
+            color: var(--muted);
+            font-size: 11px;
+            margin-bottom: 8px;
+        }
+
+        .org-count strong {
+            font: 800 25px 'Outfit', sans-serif;
+        }
+
+        .pending-number {
+            color: #ffd98a;
+        }
+
+        .approved-number {
+            color: #8df0bd;
+        }
+
+        .rejected-number {
+            color: #ff9eae;
+        }
+
+        .org-applications-title {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .org-application {
+            padding: 16px 0;
+            border-top: 1px solid var(--border);
+        }
+
+        .org-application-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .applicant-name {
+            color: #fff;
+            font-size: 14px;
+            font-weight: 700;
+            overflow-wrap: anywhere;
+        }
+
+        .org-application p {
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+        .Pending {
+            color: #ffd98a;
+            background: rgba(245,158,11,.13);
+            border: 1px solid rgba(245,158,11,.25);
+        }
+
+        .Approved {
+            color: #8df0bd;
+            background: rgba(34,197,94,.12);
+            border: 1px solid rgba(34,197,94,.25);
+        }
+
+        .Rejected {
+            color: #ff9eae;
+            background: rgba(239,68,68,.12);
+            border: 1px solid rgba(239,68,68,.25);
+        }
+
+        .org-review-btn {
+            width: 100%;
+            padding: 11px 14px;
+            border: 1px solid rgba(168,85,247,.35);
+            border-radius: 9px;
+            background: rgba(168,85,247,.12);
+            color: #e5b8ff;
+            font-size: 12px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        .org-review-btn:hover {
+            background: linear-gradient(100deg, var(--pink), var(--purple));
+            color: white;
+            border-color: transparent;
+        }
+
+        .org-empty {
+            padding: 25px 10px;
+            text-align: center;
+            color: var(--muted);
+            font-size: 13px;
+            border-top: 1px solid var(--border);
+            line-height: 1.7;
+        }
+
+        .remarks {
+            margin-top: 9px;
+            overflow-wrap: anywhere;
+        }
+
+        /* STATUS DETAILS POPUP */
+
+        .status-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 1500;
+            background: rgba(7,3,12,.72);
+            backdrop-filter: blur(5px);
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .status-modal-content {
+            width: 100%;
+            max-width: 650px;
+            max-height: 85vh;
+            overflow-y: auto;
+            padding: 27px;
+            background: #1d122b;
+            border: 1px solid rgba(168,85,247,.4);
+            border-radius: 17px;
+            box-shadow: 0 20px 80px rgba(0,0,0,.45);
+        }
+
+        .status-modal-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 8px;
+        }
+
+        .status-modal-header h2 {
+            font: 800 23px 'Outfit', sans-serif;
+            overflow-wrap: anywhere;
+        }
+
+        .status-subtitle {
+            color: var(--muted);
+            font-size: 13px;
+            margin-bottom: 20px;
+        }
+
+        .close-status {
+            flex-shrink: 0;
+            width: 34px;
+            height: 34px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: rgba(255,255,255,.06);
+            color: white;
+            font-size: 23px;
+            cursor: pointer;
+        }
+
+        .close-status:hover {
+            background: rgba(255,60,172,.2);
+        }
+
+        .status-detail-card {
+            padding: 17px;
+            margin-top: 12px;
+            border: 1px solid var(--border);
+            border-radius: 11px;
+            background: rgba(255,255,255,.035);
+        }
+
+        .status-detail-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .status-detail-top h3 {
+            font: 700 16px 'Outfit', sans-serif;
+            overflow-wrap: anywhere;
+        }
+
+        .status-detail-card p {
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.7;
+            margin-bottom: 7px;
+            overflow-wrap: anywhere;
+        }
+
+        .status-detail-card p strong {
+            color: #e5b8ff;
+        }
+
+        .status-detail-card .org-review-btn {
+            margin-top: 10px;
+        }
+
+        .status-empty {
+            padding: 25px 10px;
+            text-align: center;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        /* REVIEW POPUP */
+
+        .review-box {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(7,3,12,.8);
+            backdrop-filter: blur(7px);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .review-content {
+            width: 100%;
+            max-width: 560px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 27px;
+            background: #1d122b;
+            border: 1px solid rgba(168,85,247,.35);
+            border-radius: 17px;
+            box-shadow: 0 20px 80px rgba(0,0,0,.45);
+        }
+
+        .review-content h2 {
+            font: 800 25px 'Outfit', sans-serif;
+            margin-bottom: 22px;
+        }
+
+        .review-content > p {
+            margin-bottom: 12px;
+            line-height: 1.6;
+            font-size: 13px;
+            color: #e7ddef;
+            overflow-wrap: anywhere;
+        }
+
+        .review-content p strong {
+            color: #c9a7f4;
+        }
+
+        .review-content label {
+            display: block;
+            margin: 17px 0 8px;
+            font-size: 12px;
+            font-weight: 800;
+            color: #e8d9f8;
+        }
+
+        select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid rgba(255,255,255,.12);
+            border-radius: 9px;
+            margin-bottom: 8px;
+            background: #130b20;
+            color: var(--text);
+            outline: none;
+        }
+
+        select:focus, textarea:focus {
+            border-color: var(--purple);
+            box-shadow: 0 0 0 3px rgba(168,85,247,.1);
+        }
+
+        select option {
+            background: #1d122b;
+            color: white;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 90px;
+        }
+
+        .review-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .review-actions button {
+            flex: 1;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        .save-btn {
+            background: linear-gradient(100deg, var(--pink), var(--purple));
+            color: white;
+            border: none;
+        }
+
+        .close-btn {
+            background: rgba(255,255,255,.06);
+            color: #e8d9f8;
+            border: 1px solid var(--border);
+        }
+
+        .save-btn:hover {
+            filter: brightness(1.12);
+        }
+
+        .close-btn:hover {
+            background: rgba(255,255,255,.12);
+        }
+
+        .footer {
+            text-align: center;
+            color: #8e7c9f;
+            font-size: 12px;
+            padding: 35px 15px 10px;
+        }
+
+        /* RESPONSIVE */
+
+        @media (max-width: 1000px) {
+            .stats {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 750px) {
+            .container {
+                padding: 28px 4%;
+            }
+
+            .organization-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .topbar {
+                padding: 15px 4%;
+            }
+
+            .brand-name {
+                font-size: 19px;
+            }
+
+            .brand-icon {
+                width: 37px;
+                height: 37px;
+            }
+
+            .logout {
+                padding: 9px 12px;
+            }
+
+            .stats {
+                gap: 10px;
+            }
+
+            .stat-card {
+                padding: 16px;
+            }
+
+            .stat-card h2 {
+                font-size: 27px;
+            }
+
+            .organization-card {
+                padding: 17px;
+            }
+
+            .org-counts {
+                gap: 7px;
+            }
+
+            .org-count {
+                padding: 12px 8px;
+            }
+
+            .org-count strong {
+                font-size: 21px;
+            }
+
+            .review-content,
+            .status-modal-content {
+                padding: 20px;
+            }
+
+            .review-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="topbar">
+    <a href="/admin/dashboard" class="brand">
+        <div class="brand-icon">✦</div>
+        <div>
+            <div class="brand-name">ORG<span>PORT</span></div>
+            <div class="brand-subtitle">ADMINISTRATION PANEL</div>
+        </div>
+    </a>
+
+    <a href="/logout" class="logout">Logout ↗</a>
+</header>
+
+<main class="container">
+
+    <section class="welcome">
+        <div class="eyebrow">Administrator Workspace</div>
+        <h1>Admin <span class="gradient-text">Dashboard</span></h1>
+        <p>Manage and review renewal applications for each organization.</p>
+    </section>
+
+    <%
+        const allRenewals = renewals || [];
+
+        const totalCount = allRenewals.length;
+
+        const pendingCount = allRenewals.filter(function(item) {
+            return (item.status || 'Pending') === 'Pending';
+        }).length;
+
+        const approvedCount = allRenewals.filter(function(item) {
+            return item.status === 'Approved';
+        }).length;
+
+        const rejectedCount = allRenewals.filter(function(item) {
+            return item.status === 'Rejected';
+        }).length;
+
+        const organizationList = [
+            { name: 'XCite', type: 'Dance Club', icon: '✦' },
+            { name: 'Cite Council', type: 'Leadership', icon: '♛' },
+            { name: 'CiteMass', type: 'Academic', icon: '⌘' },
+            { name: 'F1', type: 'Academic', icon: '⌨' }
+        ];
+    %>
+
+
+
+    <!-- ORGANIZATION CARDS -->
+
+    <section>
+        <h2 class="section-title">
+            Organization <span class="gradient-text">Renewals</span>
+        </h2>
+
+        <p class="section-description">
+            Click a count box to view applications by status. You can review
+            and update each application's renewal decision.
+        </p>
+
+        <div class="organization-grid">
+
+            <% organizationList.forEach(function(org) {
+
+                const orgApplications = allRenewals.filter(function(item) {
+                    return (item.org_name || '').trim().toLowerCase()
+                        === org.name.toLowerCase();
+                });
+
+                const orgPending = orgApplications.filter(function(item) {
+                    return (item.status || 'Pending') === 'Pending';
+                }).length;
+
+                const orgApproved = orgApplications.filter(function(item) {
+                    return item.status === 'Approved';
+                }).length;
+
+                const orgRejected = orgApplications.filter(function(item) {
+                    return item.status === 'Rejected';
+                }).length;
+
+            %>
+
+                <div class="organization-card">
+
+                    <div class="organization-header">
+                        <div>
+                            <h2><%= org.name %></h2>
+                            <p><%= org.type %></p>
+                        </div>
+
+                        <div class="org-icon"><%= org.icon %></div>
+                    </div>
+
+                    <!-- CLICKABLE STATUS BOXES -->
+
+                    <div class="org-counts">
+
+                        <div class="org-count clickable-count"
+                             role="button"
+                             tabindex="0"
+                             onclick="showStatus('<%= org.name %>', 'All')"
+                             onkeydown="handleCountKey(event, '<%= org.name %>', 'All')">
+                            <span>Total</span>
+                            <strong><%= orgApplications.length %></strong>
+                        </div>
+
+                        <div class="org-count clickable-count"
+                             role="button"
+                             tabindex="0"
+                             onclick="showStatus('<%= org.name %>', 'Pending')"
+                             onkeydown="handleCountKey(event, '<%= org.name %>', 'Pending')">
+                            <span>Pending</span>
+                            <strong class="pending-number"><%= orgPending %></strong>
+                        </div>
+
+                        <div class="org-count clickable-count"
+                             role="button"
+                             tabindex="0"
+                             onclick="showStatus('<%= org.name %>', 'Approved')"
+                             onkeydown="handleCountKey(event, '<%= org.name %>', 'Approved')">
+                            <span>Approved</span>
+                            <strong class="approved-number"><%= orgApproved %></strong>
+                        </div>
+
+                        <div class="org-count clickable-count"
+                             role="button"
+                             tabindex="0"
+                             onclick="showStatus('<%= org.name %>', 'Rejected')"
+                             onkeydown="handleCountKey(event, '<%= org.name %>', 'Rejected')">
+                            <span>Rejected</span>
+                            <strong class="rejected-number"><%= orgRejected %></strong>
+                        </div>
+
+                    </div>
+
+                    <!-- APPLICATIONS LIST -->
+
+                    <div class="org-applications-title">
+                        Renewal Applications
+                    </div>
+
+                    <% if (orgApplications.length === 0) { %>
+
+                        <div class="org-empty">
+                            No renewal applications yet for
+                            <strong><%= org.name %></strong>.
+                        </div>
+
+                    <% } else { %>
+
+                        <% orgApplications.forEach(function(item) { %>
+
+                            <div class="org-application">
+
+                                <div class="org-application-top">
+                                    <span class="applicant-name">
+                                        <%= item.fullname || 'N/A' %>
+                                    </span>
+
+                                    <span class="status <%= item.status || 'Pending' %>">
+                                        <%= item.status || 'Pending' %>
+                                    </span>
+                                </div>
+
+                                <p>
+                                    School Year: <%= item.school_year || 'N/A' %>
+                                    <br>
+                                    Year Level: <%= item.year_level || 'N/A' %>
+                                </p>
+
+                                <% if (item.admin_remarks) { %>
+                                    <p class="remarks">
+                                        <strong>Admin Remarks:</strong>
+                                        <br>
+                                        <%= item.admin_remarks %>
+                                    </p>
+                                <% } %>
+
+                                <button
+                                    type="button"
+                                    class="org-review-btn"
+                                    onclick="openReview('<%= item.renewal_id %>')">
+                                    Review Application →
+                                </button>
+
+                            </div>
+
+                        <% }); %>
+
+                    <% } %>
+
+                </div>
+
+            <% }); %>
+
+        </div>
+    </section>
+
+    <footer class="footer">
+        © 2026 OrgPort · Organization Renewal System
+    </footer>
+
+</main>
+
+<!-- STATUS DETAILS POPUP -->
+
+<div
+    class="status-modal"
+    id="statusModal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="statusTitle"
+    onclick="closeStatusOutside(event)">
+
+    <div class="status-modal-content">
+
+        <div class="status-modal-header">
+            <h2 id="statusTitle">
+                Renewal Applications
+            </h2>
+
+            <button
+                type="button"
+                class="close-status"
+                onclick="closeStatus()"
+                aria-label="Close popup">
+                &times;
+            </button>
+        </div>
+
+        <p class="status-subtitle" id="statusSubtitle"></p>
+
+        <div id="statusDetails"></div>
+
+    </div>
+</div>
+
+<!-- INDIVIDUAL APPLICATION REVIEW POPUPS -->
+
+<% allRenewals.forEach(function(item) { %>
+
+    <div
+        class="review-box"
+        id="review-<%= item.renewal_id %>"
+        onclick="closeReviewOutside(event, '<%= item.renewal_id %>')">
+
+        <div class="review-content">
+
+            <div class="eyebrow">Application Review</div>
+
+            <h2>
+                Review <span class="gradient-text">Application</span>
+            </h2>
+
+            <p>
+                <strong>Application ID:</strong>
+                <%= item.renewal_id %>
+            </p>
+
+            <p>
+                <strong>Applicant:</strong>
+                <%= item.fullname || 'N/A' %>
+            </p>
+
+            <p>
+                <strong>Year Level:</strong>
+                <%= item.year_level || 'N/A' %>
+            </p>
+
+            <p>
+                <strong>Organization:</strong>
+                <%= item.org_name || 'N/A' %>
+            </p>
+
+            <p>
+                <strong>Organization Type:</strong>
+                <%= item.org_type || 'N/A' %>
+            </p>
+
+            <p>
+                <strong>School Year:</strong>
+                <%= item.school_year || 'N/A' %>
+            </p>
+
+            <p>
+                <strong>President:</strong>
+                <%= item.president || 'N/A' %>
+            </p>
+
+            <p>
+                <strong>Adviser:</strong>
+                <%= item.adviser || 'N/A' %>
+            </p>
+
+            <p>
+                <strong>Contact Email:</strong>
+                <%= item.contact_email || 'N/A' %>
+            </p>
+
+            <p>
+                <strong>Objectives:</strong>
+                <%= item.objectives || 'N/A' %>
+            </p>
+
+            <p>
+                <strong>Achievements:</strong>
+                <%= item.achievements || 'None provided' %>
+            </p>
+
+            <form
+                action="/admin/renewal/<%= item.renewal_id %>"
+                method="POST">
+
+                <label for="status-<%= item.renewal_id %>">
+                    Renewal Status
+                </label>
+
+                <select
+                    id="status-<%= item.renewal_id %>"
+                    name="status"
+                    required>
+
+                    <option
+                        value="Pending"
+                        <%= (item.status || 'Pending') === 'Pending' ? 'selected' : '' %>>
+                        Pending
+                    </option>
+
+                    <option
+                        value="Approved"
+                        <%= item.status === 'Approved' ? 'selected' : '' %>>
+                        Approved
+                    </option>
+
+                    <option
+                        value="Rejected"
+                        <%= item.status === 'Rejected' ? 'selected' : '' %>>
+                        Rejected
+                    </option>
+
+                </select>
+
+                <label for="remarks-<%= item.renewal_id %>">
+                    Admin Remarks
+                </label>
+
+                <textarea
+                    id="remarks-<%= item.renewal_id %>"
+                    name="admin_remarks"
+                    placeholder="Enter remarks or reason for rejection"><%= item.admin_remarks || '' %></textarea>
+
+                <div class="review-actions">
+
+                    <button type="submit" class="save-btn">
+                        Save Decision
+                    </button>
+
+                    <button
+                        type="button"
+                        class="close-btn"
+                        onclick="closeReview('<%= item.renewal_id %>')">
+                        Cancel
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+<% }); %>
+
+<script>
+    // Make the status counts work with keyboard Enter or Space.
+    function handleCountKey(event, orgName, status) {
+        if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            showStatus(orgName, status);
+        }
+    }
+
+    // Get the renewal records rendered by EJS.
+    const renewalData = <%- JSON.stringify(allRenewals).replace(/</g, '\\u003c') %>;
+
+    // Show applications for the selected organization and status.
+    function showStatus(orgName, selectedStatus) {
+        const applications = renewalData.filter(function(item) {
+            const sameOrganization =
+                (item.org_name || '').trim().toLowerCase() ===
+                orgName.trim().toLowerCase();
+
+            const status = item.status || 'Pending';
+
+            const sameStatus =
+                selectedStatus === 'All' || status === selectedStatus;
+
+            return sameOrganization && sameStatus;
+        });
+
+        document.getElementById('statusTitle').textContent =
+            orgName + ' - ' + selectedStatus + ' Applications';
+
+        document.getElementById('statusSubtitle').textContent =
+            applications.length + ' application(s) found';
+
+        const details = document.getElementById('statusDetails');
+        details.replaceChildren();
+
+        if (applications.length === 0) {
+            const emptyMessage = document.createElement('p');
+            emptyMessage.className = 'status-empty';
+            emptyMessage.textContent =
+                'No ' + selectedStatus.toLowerCase() +
+                ' applications found for ' + orgName + '.';
+
+            details.appendChild(emptyMessage);
+        } else {
+            applications.forEach(function(item) {
+                const card = document.createElement('div');
+                card.className = 'status-detail-card';
+
+                const top = document.createElement('div');
+                top.className = 'status-detail-top';
+
+                const applicant = document.createElement('h3');
+                applicant.textContent = item.fullname || 'N/A';
+
+                const badge = document.createElement('span');
+                const status = item.status || 'Pending';
+                badge.className = 'status ' + status;
+                badge.textContent = status;
+
+                top.appendChild(applicant);
+                top.appendChild(badge);
+                card.appendChild(top);
+
+                function addDetail(label, value) {
+                    const p = document.createElement('p');
+                    const strong = document.createElement('strong');
+
+                    strong.textContent = label + ': ';
+                    p.appendChild(strong);
+                    p.appendChild(
+                        document.createTextNode(value || 'N/A')
+                    );
+
+                    card.appendChild(p);
+                }
+
+                addDetail('Application ID', item.renewal_id);
+                addDetail('Organization', item.org_name);
+                addDetail('Organization Type', item.org_type);
+                addDetail('School Year', item.school_year);
+                addDetail('Year Level', item.year_level);
+                addDetail('President', item.president);
+                addDetail('Adviser', item.adviser);
+                addDetail('Contact Email', item.contact_email);
+                addDetail('Objectives', item.objectives);
+                addDetail('Achievements', item.achievements || 'None provided');
+                addDetail('Admin Remarks', item.admin_remarks);
+
+                const reviewButton = document.createElement('button');
+                reviewButton.type = 'button';
+                reviewButton.className = 'org-review-btn';
+                reviewButton.textContent = 'Review Application →';
+
+                reviewButton.addEventListener('click', function() {
+                    closeStatus();
+                    openReview(String(item.renewal_id));
+                });
+
+                card.appendChild(reviewButton);
+                details.appendChild(card);
+            });
+        }
+
+        document.getElementById('statusModal').style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeStatus() {
+        document.getElementById('statusModal').style.display = 'none';
+        document.body.style.overflow = '';
+    }
+
+    function closeStatusOutside(event) {
+        if (event.target === event.currentTarget) {
+            closeStatus();
+        }
+    }
+
+    // Open an individual application's review popup.
+    function openReview(id) {
+        const popup = document.getElementById('review-' + id);
+
+        if (popup) {
+            closeStatus();
+            popup.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+    }
+
+    function closeReview(id) {
+        const popup = document.getElementById('review-' + id);
+
+        if (popup) {
+            popup.style.display = 'none';
+        }
+
+        if (!document.querySelector('.review-box[style*="display: flex"]')) {
+            document.body.style.overflow = '';
+        }
+    }
+
+    function closeReviewOutside(event, id) {
+        if (event.target === event.currentTarget) {
+            closeReview(id);
+        }
+    }
+
+    // Close open popups when the user presses Escape.
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            closeStatus();
+
+            document.querySelectorAll('.review-box').forEach(function(popup) {
+                popup.style.display = 'none';
+            });
+
+            document.body.style.overflow = '';
+        }
+    });
+</script>
+
+</body>
+</html>

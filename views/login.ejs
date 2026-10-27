@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Organization Renewal System</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        :root {
+            --pink: #ff3cac;
+            --hot-pink: #ff1493;
+            --purple: #8b5cf6;
+            --lavender: #c4b5fd;
+            --dark: #130b20;
+            --muted: #b8a8c9;
+            --white: #fff8ff;
+        }
+
+        body {
+            min-height: 100vh;
+            background: var(--dark);
+            color: var(--white);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* NEON BACKGROUND */
+
+        body::before,
+        body::after {
+            content: "";
+            position: fixed;
+            width: 350px;
+            height: 350px;
+            border-radius: 50%;
+            filter: blur(110px);
+            opacity: 0.6;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        body::before {
+            background: #ff1493;
+            top: -130px;
+            left: -100px;
+        }
+
+        body::after {
+            background: #7028ff;
+            right: -100px;
+            bottom: -130px;
+        }
+
+        .glow {
+            position: fixed;
+            width: 220px;
+            height: 220px;
+            background: #ff3cac;
+            filter: blur(120px);
+            opacity: 0.25;
+            top: 40%;
+            left: 40%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* MAIN LAYOUT */
+
+        .login-container {
+            width: 100%;
+            max-width: 1000px;
+            min-height: 580px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            background: rgba(30, 17, 46, 0.88);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 26px;
+            overflow: hidden;
+            box-shadow:
+                0 0 50px rgba(255, 60, 172, 0.12),
+                0 25px 80px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(20px);
+            position: relative;
+        }
+
+        /* LEFT PANEL */
+
+        .brand-panel {
+            padding: 55px 45px;
+            background:
+                radial-gradient(circle at 20% 20%, rgba(255, 60, 172, 0.3), transparent 40%),
+                linear-gradient(145deg, #291137, #160d26 75%);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+            border-right: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .brand-panel::before {
+            content: "✦";
+            position: absolute;
+            font-size: 220px;
+            color: rgba(255, 60, 172, 0.07);
+            right: -20px;
+            bottom: 20px;
+            transform: rotate(-15deg);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .brand-icon {
+            width: 46px;
+            height: 46px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #ff3cac, #8b5cf6);
+            box-shadow: 0 0 25px rgba(255, 60, 172, 0.4);
+            font-size: 23px;
+        }
+
+        .brand-name {
+            font-family: 'Outfit', sans-serif;
+            font-size: 19px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+        }
+
+        .brand-name span {
+            color: #ff70c5;
+        }
+
+        .brand-content {
+            position: relative;
+            z-index: 1;
+            margin: 55px 0;
+        }
+
+        .eyebrow {
+            display: inline-block;
+            padding: 8px 13px;
+            border: 1px solid rgba(255, 60, 172, 0.4);
+            background: rgba(255, 60, 172, 0.08);
+            border-radius: 50px;
+            color: #ff86ce;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            margin-bottom: 24px;
+        }
+
+        .brand-content h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: clamp(38px, 4.5vw, 55px);
+            line-height: 1.08;
+            font-weight: 900;
+            letter-spacing: -2px;
+            margin-bottom: 22px;
+        }
+
+        .brand-content h1 span {
+            display: block;
+            background: linear-gradient(90deg, #ff3cac, #c4b5fd);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .brand-content p {
+            max-width: 330px;
+            color: #c5b5d5;
+            font-size: 14px;
+            line-height: 1.9;
+        }
+
+        .feature-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .feature {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #e6d9f1;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .feature-icon {
+            width: 27px;
+            height: 27px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 60, 172, 0.12);
+            color: #ff70c5;
+            border: 1px solid rgba(255, 60, 172, 0.25);
+            border-radius: 9px;
+        }
+
+        /* RIGHT PANEL */
+
+        .form-panel {
+            padding: 45px 50px 35px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .form-header {
+            margin-bottom: 30px;
+        }
+
+        .small-title {
+            color: #ff70c5;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .form-header h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 36px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin-bottom: 10px;
+        }
+
+        .form-header h2 span {
+            color: var(--pink);
+        }
+
+        .form-header p {
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .form-group {
+            margin-bottom: 21px;
+        }
+
+        label {
+            display: block;
+            font-size: 12px;
+            font-weight: 700;
+            color: #f2e7fa;
+            margin-bottom: 10px;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 16px;
+            opacity: 0.85;
+            pointer-events: none;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 15px 16px 15px 45px;
+            border: 1px solid #493455;
+            border-radius: 12px;
+            outline: none;
+            background: rgba(17, 9, 27, 0.75);
+            color: white;
+            font-size: 13px;
+            transition: 0.25s ease;
+        }
+
+        input::placeholder {
+            color: #796987;
+        }
+
+        select {
+            cursor: pointer;
+            appearance: none;
+            padding-right: 40px;
+        }
+
+        select option {
+            background: #21132f;
+            color: white;
+        }
+
+        .select-arrow {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #ff70c5;
+            font-size: 13px;
+            pointer-events: none;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: var(--pink);
+            box-shadow:
+                0 0 0 3px rgba(255, 60, 172, 0.1),
+                0 0 18px rgba(255, 60, 172, 0.08);
+        }
+
+        .password-container input {
+            padding-right: 50px;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            font-size: 19px;
+            user-select: none;
+            transition: transform 0.2s;
+        }
+
+        .toggle-password:hover {
+            transform: translateY(-50%) scale(1.15);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 16px;
+            margin-top: 5px;
+            background: linear-gradient(100deg, #ff1493, #b026ff);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            cursor: pointer;
+            box-shadow: 0 7px 25px rgba(255, 20, 147, 0.25);
+            transition: 0.25s ease;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 35px rgba(255, 20, 147, 0.45);
+            filter: brightness(1.12);
+        }
+
+        .login-btn:active {
+            transform: translateY(0);
+        }
+
+        .signup-link {
+            text-align: center;
+            margin-top: 25px;
+            color: #b8a8c9;
+            font-size: 12px;
+        }
+
+        .signup-link a {
+            color: #ff70c5;
+            font-weight: 800;
+            text-decoration: none;
+            margin-left: 4px;
+        }
+
+        .signup-link a:hover {
+            color: #d4b5ff;
+            text-decoration: underline;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            color: #796987;
+            font-size: 10px;
+            letter-spacing: 0.5px;
+        }
+
+        /* RESPONSIVE DESIGN */
+
+        @media (max-width: 760px) {
+            .login-container {
+                max-width: 480px;
+                grid-template-columns: 1fr;
+            }
+
+            .brand-panel {
+                padding: 30px;
+                min-height: 280px;
+                border-right: none;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            }
+
+            .brand-content {
+                margin: 35px 0 20px;
+            }
+
+            .brand-content h1 {
+                font-size: 38px;
+            }
+
+            .brand-content p {
+                font-size: 13px;
+            }
+
+            .feature-list {
+                display: none;
+            }
+
+            .form-panel {
+                padding: 35px 30px;
+            }
+
+            .form-header h2 {
+                font-size: 30px;
+            }
+        }
+
+        @media (max-width: 380px) {
+            body {
+                padding: 15px;
+            }
+
+            .brand-panel {
+                padding: 25px 22px;
+            }
+
+            .form-panel {
+                padding: 30px 22px;
+            }
+
+            .brand-content h1 {
+                font-size: 33px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                transition: none !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="glow"></div>
+
+    <main class="login-container">
+
+        <!-- LEFT BRANDING PANEL -->
+
+        <section class="brand-panel">
+
+            <div class="brand">
+                <div class="brand-icon">✦</div>
+
+                <div class="brand-name">
+                    ORG<span>PORT</span>
+                </div>
+            </div>
+
+            <div class="brand-content">
+
+                <div class="eyebrow">
+                    ✦ YOUR ORGANIZATION, YOUR RULES
+                </div>
+
+                <h1>
+                    Welcome back,
+                    <span>boss lady.</span>
+                </h1>
+
+                <p>
+                    Ready to take charge? Sign in to manage your
+                    organization's renewal applications and keep
+                    everything running smoothly.
+                </p>
+
+            </div>
+
+            <div class="feature-list">
+
+                <div class="feature">
+                    <span class="feature-icon">✓</span>
+                    Your organization, one dashboard
+                </div>
+
+                <div class="feature">
+                    <span class="feature-icon">✦</span>
+                    Stay on top of every renewal
+                </div>
+
+                <div class="feature">
+                    <span class="feature-icon">♡</span>
+                    Lead boldly. Stay organized.
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- LOGIN FORM -->
+
+        <section class="form-panel">
+
+            <div class="form-header">
+
+                <div class="small-title">
+                    GOOD TO HAVE YOU BACK
+                </div>
+
+                <h2>
+                    Let's get in<span>.</span>
+                </h2>
+
+                <p>
+                    Enter your credentials and step back into
+                    your organization's workspace.
+                </p>
+
+            </div>
+
+            <form action="/login" method="POST">
+
+                <div class="form-group">
+
+                    <label for="email">EMAIL ADDRESS</label>
+
+                    <div class="input-wrapper">
+
+                        <span class="input-icon">✉</span>
+
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="you@example.com"
+                            autocomplete="email"
+                            required>
+
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label for="password">PASSWORD</label>
+
+                    <div class="input-wrapper password-container">
+
+                        <span class="input-icon">♙</span>
+
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Enter your password"
+                            autocomplete="current-password"
+                            required>
+
+                        <span
+                            class="toggle-password"
+                            id="eye"
+                            role="button"
+                            tabindex="0"
+                            aria-label="Show password"
+                            aria-controls="password">🙈</span>
+
+                    </div>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label for="role">LOGIN AS</label>
+
+                    <div class="input-wrapper">
+
+                        <span class="input-icon">♛</span>
+
+                        <select name="role" id="role" required>
+                            <option value="">Select your role</option>
+                            <option value="Student">Student</option>
+                            <option value="Admin">Admin</option>
+                        </select>
+
+                        <span class="select-arrow">▼</span>
+
+                    </div>
+
+                </div>
+
+                <button type="submit" class="login-btn">
+                    LOG IN TO YOUR ACCOUNT &nbsp; ↗
+                </button>
+
+            </form>
+
+            <div class="signup-link">
+                New around here?
+                <a href="/">Create an account ↗</a>
+            </div>
+
+            <div class="footer">
+                © 2026 ORGPORT · BUILT FOR THE BOLD
+            </div>
+
+        </section>
+
+    </main>
+
+    <script>
+        const password = document.getElementById("password");
+        const eye = document.getElementById("eye");
+
+        function togglePassword() {
+            if (password.type === "password") {
+                password.type = "text";
+                eye.textContent = "🙉";
+                eye.setAttribute("aria-label", "Hide password");
+            } else {
+                password.type = "password";
+                eye.textContent = "🙈";
+                eye.setAttribute("aria-label", "Show password");
+            }
+        }
+
+        eye.addEventListener("click", togglePassword);
+
+        eye.addEventListener("keydown", function(event) {
+            if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault();
+                togglePassword();
+            }
+        });
+    </script>
+
+</body>
+</html>
