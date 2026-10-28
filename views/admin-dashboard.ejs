@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,6 +34,11 @@
                 var(--bg);
             color: var(--text);
             font-family: 'DM Sans', sans-serif;
+        }
+
+        body.drawer-open,
+        body.popup-open {
+            overflow: hidden;
         }
 
         button, input, select, textarea {
@@ -88,19 +94,204 @@
             margin-top: 2px;
         }
 
-        .logout {
-            padding: 10px 18px;
-            border: 1px solid rgba(255,60,172,.35);
-            border-radius: 9px;
-            color: #ffb3df;
-            font-size: 13px;
-            font-weight: 700;
+        /* ADMIN PROFILE BUTTON */
+
+        .admin-profile {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            padding: 7px 11px;
+            background: transparent;
+            color: var(--text);
+            border: 1px solid transparent;
+            border-radius: 12px;
+            cursor: pointer;
+            text-align: left;
             transition: .2s;
         }
 
-        .logout:hover {
-            background: rgba(255,60,172,.12);
-            border-color: var(--pink);
+        .admin-profile:hover {
+            background: rgba(255,60,172,.08);
+            border-color: rgba(255,60,172,.25);
+        }
+
+        .admin-profile:focus-visible,
+        .drawer-close:focus-visible {
+            outline: 2px solid var(--pink);
+            outline-offset: 3px;
+        }
+
+        .admin-avatar {
+            width: 42px;
+            height: 42px;
+            display: grid;
+            place-items: center;
+            flex-shrink: 0;
+            border-radius: 13px;
+            background: linear-gradient(135deg, var(--pink), var(--purple));
+            font-size: 20px;
+        }
+
+        .admin-profile-details {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .admin-profile-name {
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .admin-profile-role {
+            color: var(--muted);
+            font-size: 10px;
+        }
+
+        .admin-profile-arrow {
+            color: var(--muted);
+            margin-left: 4px;
+        }
+
+        /* PROFILE DRAWER */
+
+        .profile-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 3000;
+            background: rgba(7,3,12,.65);
+            opacity: 0;
+            visibility: hidden;
+            transition: .25s;
+        }
+
+        .profile-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .profile-drawer {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 350px;
+            max-width: 90%;
+            height: 100vh;
+            height: 100dvh;
+            padding: 27px;
+            overflow-y: auto;
+            background: #1d122b;
+            border-left: 1px solid var(--border);
+            box-shadow: -10px 0 40px rgba(0,0,0,.4);
+            z-index: 3001;
+            transform: translateX(100%);
+            visibility: hidden;
+            transition: transform .3s ease, visibility .3s;
+        }
+
+        .profile-drawer.show {
+            transform: translateX(0);
+            visibility: visible;
+        }
+
+        .drawer-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .drawer-header h2 {
+            font: 800 22px 'Outfit', sans-serif;
+        }
+
+        .drawer-close {
+            width: 35px;
+            height: 35px;
+            border: 1px solid var(--border);
+            border-radius: 9px;
+            background: transparent;
+            color: var(--text);
+            font-size: 23px;
+            cursor: pointer;
+        }
+
+        .drawer-close:hover {
+            background: rgba(255,60,172,.15);
+        }
+
+        .drawer-user {
+            text-align: center;
+            padding: 30px 0;
+        }
+
+        .drawer-avatar {
+            width: 75px;
+            height: 75px;
+            margin: 0 auto 14px;
+            display: grid;
+            place-items: center;
+            border-radius: 22px;
+            background: linear-gradient(135deg, var(--pink), var(--purple));
+            font-size: 32px;
+        }
+
+        .drawer-user h3 {
+            font: 800 19px 'Outfit', sans-serif;
+            margin-bottom: 7px;
+        }
+
+        .drawer-user p {
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .drawer-label {
+            color: var(--pink);
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            margin-bottom: 14px;
+        }
+
+        .profile-info {
+            padding: 15px;
+            margin-bottom: 12px;
+            background: rgba(255,255,255,.035);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+        }
+
+        .profile-info-label {
+            color: var(--muted);
+            font-size: 11px;
+            margin-bottom: 7px;
+        }
+
+        .profile-info-value {
+            color: var(--text);
+            font-size: 13px;
+            font-weight: 700;
+            overflow-wrap: anywhere;
+        }
+
+        .drawer-logout {
+            display: block;
+            margin-top: 25px;
+            padding: 13px;
+            text-align: center;
+            color: #ffb3df;
+            background: rgba(255,60,172,.1);
+            border: 1px solid rgba(255,60,172,.25);
+            border-radius: 10px;
+            font-size: 12px;
+            font-weight: 800;
+            transition: .2s;
+        }
+
+        .drawer-logout:hover {
+            background: rgba(255,60,172,.2);
         }
 
         .container {
@@ -244,8 +435,6 @@
             border-radius: 10px;
         }
 
-        /* CLICKABLE STATUS BOXES */
-
         .clickable-count {
             cursor: pointer;
             transition: .2s;
@@ -273,17 +462,9 @@
             font: 800 25px 'Outfit', sans-serif;
         }
 
-        .pending-number {
-            color: #ffd98a;
-        }
-
-        .approved-number {
-            color: #8df0bd;
-        }
-
-        .rejected-number {
-            color: #ff9eae;
-        }
+        .pending-number { color: #ffd98a; }
+        .approved-number { color: #8df0bd; }
+        .rejected-number { color: #ff9eae; }
 
         .org-applications-title {
             font-size: 14px;
@@ -588,9 +769,7 @@
             border: 1px solid var(--border);
         }
 
-        .save-btn:hover {
-            filter: brightness(1.12);
-        }
+        .save-btn:hover { filter: brightness(1.12); }
 
         .close-btn:hover {
             background: rgba(255,255,255,.12);
@@ -635,8 +814,17 @@
                 height: 37px;
             }
 
-            .logout {
-                padding: 9px 12px;
+            .admin-profile {
+                gap: 7px;
+                padding: 5px;
+            }
+
+            .admin-profile-details {
+                display: none;
+            }
+
+            .profile-drawer {
+                padding: 22px;
             }
 
             .stats {
@@ -690,8 +878,67 @@
         </div>
     </a>
 
-    <a href="/logout" class="logout">Logout ↗</a>
+    <button
+        type="button"
+        class="admin-profile"
+        id="profileToggle"
+        aria-label="Open admin profile"
+        aria-expanded="false"
+        aria-controls="profileDrawer">
+
+        <span class="admin-avatar">👑</span>
+
+        <span class="admin-profile-details">
+            <span class="admin-profile-name">Administrator</span>
+            <span class="admin-profile-role">Admin Account</span>
+        </span>
+
+        <span class="admin-profile-arrow">⌄</span>
+    </button>
 </header>
+
+<!-- ADMIN PROFILE OVERLAY AND DRAWER -->
+
+<div class="profile-overlay" id="profileOverlay"></div>
+
+<aside
+    class="profile-drawer"
+    id="profileDrawer"
+    aria-hidden="true"
+    aria-label="Administrator profile">
+
+    <div class="drawer-header">
+        <h2>My Profile</h2>
+
+        <button
+            type="button"
+            class="drawer-close"
+            id="profileClose"
+            aria-label="Close profile">
+            &times;
+        </button>
+    </div>
+
+    <div class="drawer-user">
+        <div class="drawer-avatar">👑</div>
+        <h3>Administrator</h3>
+        <p>OrgPort Admin Account</p>
+    </div>
+
+    <div class="drawer-label">ACCOUNT INFORMATION</div>
+
+    <div class="profile-info">
+        <div class="profile-info-label">Account Type</div>
+        <div class="profile-info-value">Administrator</div>
+    </div>
+
+    <div class="profile-info">
+        <div class="profile-info-label">Portal</div>
+        <div class="profile-info-value">OrgPort Administration Panel</div>
+    </div>
+
+    <a href="/logout" class="drawer-logout">↪ Log Out</a>
+</aside>
 
 <main class="container">
 
@@ -725,8 +972,6 @@
             { name: 'F1', type: 'Academic', icon: '⌨' }
         ];
     %>
-
-
 
     <!-- ORGANIZATION CARDS -->
 
@@ -774,8 +1019,6 @@
                         <div class="org-icon"><%= org.icon %></div>
                     </div>
 
-                    <!-- CLICKABLE STATUS BOXES -->
-
                     <div class="org-counts">
 
                         <div class="org-count clickable-count"
@@ -815,8 +1058,6 @@
                         </div>
 
                     </div>
-
-                    <!-- APPLICATIONS LIST -->
 
                     <div class="org-applications-title">
                         Renewal Applications
@@ -898,9 +1139,7 @@
     <div class="status-modal-content">
 
         <div class="status-modal-header">
-            <h2 id="statusTitle">
-                Renewal Applications
-            </h2>
+            <h2 id="statusTitle">Renewal Applications</h2>
 
             <button
                 type="button"
@@ -912,7 +1151,6 @@
         </div>
 
         <p class="status-subtitle" id="statusSubtitle"></p>
-
         <div id="statusDetails"></div>
 
     </div>
@@ -935,92 +1173,39 @@
                 Review <span class="gradient-text">Application</span>
             </h2>
 
-            <p>
-                <strong>Application ID:</strong>
-                <%= item.renewal_id %>
-            </p>
+            <p><strong>Application ID:</strong> <%= item.renewal_id %></p>
+            <p><strong>Applicant:</strong> <%= item.fullname || 'N/A' %></p>
+            <p><strong>Year Level:</strong> <%= item.year_level || 'N/A' %></p>
+            <p><strong>Organization:</strong> <%= item.org_name || 'N/A' %></p>
+            <p><strong>Organization Type:</strong> <%= item.org_type || 'N/A' %></p>
+            <p><strong>School Year:</strong> <%= item.school_year || 'N/A' %></p>
+            <p><strong>President:</strong> <%= item.president || 'N/A' %></p>
+            <p><strong>Adviser:</strong> <%= item.adviser || 'N/A' %></p>
+            <p><strong>Contact Email:</strong> <%= item.contact_email || 'N/A' %></p>
+            <p><strong>Objectives:</strong> <%= item.objectives || 'N/A' %></p>
+            <p><strong>Achievements:</strong> <%= item.achievements || 'None provided' %></p>
 
-            <p>
-                <strong>Applicant:</strong>
-                <%= item.fullname || 'N/A' %>
-            </p>
-
-            <p>
-                <strong>Year Level:</strong>
-                <%= item.year_level || 'N/A' %>
-            </p>
-
-            <p>
-                <strong>Organization:</strong>
-                <%= item.org_name || 'N/A' %>
-            </p>
-
-            <p>
-                <strong>Organization Type:</strong>
-                <%= item.org_type || 'N/A' %>
-            </p>
-
-            <p>
-                <strong>School Year:</strong>
-                <%= item.school_year || 'N/A' %>
-            </p>
-
-            <p>
-                <strong>President:</strong>
-                <%= item.president || 'N/A' %>
-            </p>
-
-            <p>
-                <strong>Adviser:</strong>
-                <%= item.adviser || 'N/A' %>
-            </p>
-
-            <p>
-                <strong>Contact Email:</strong>
-                <%= item.contact_email || 'N/A' %>
-            </p>
-
-            <p>
-                <strong>Objectives:</strong>
-                <%= item.objectives || 'N/A' %>
-            </p>
-
-            <p>
-                <strong>Achievements:</strong>
-                <%= item.achievements || 'None provided' %>
-            </p>
-
-            <form
-                action="/admin/renewal/<%= item.renewal_id %>"
-                method="POST">
+            <form action="/admin/renewal/<%= item.renewal_id %>" method="POST">
 
                 <label for="status-<%= item.renewal_id %>">
                     Renewal Status
                 </label>
 
-                <select
-                    id="status-<%= item.renewal_id %>"
-                    name="status"
-                    required>
-
-                    <option
-                        value="Pending"
+                <select id="status-<%= item.renewal_id %>" name="status" required>
+                    <option value="Pending"
                         <%= (item.status || 'Pending') === 'Pending' ? 'selected' : '' %>>
                         Pending
                     </option>
 
-                    <option
-                        value="Approved"
+                    <option value="Approved"
                         <%= item.status === 'Approved' ? 'selected' : '' %>>
                         Approved
                     </option>
 
-                    <option
-                        value="Rejected"
+                    <option value="Rejected"
                         <%= item.status === 'Rejected' ? 'selected' : '' %>>
                         Rejected
                     </option>
-
                 </select>
 
                 <label for="remarks-<%= item.renewal_id %>">
@@ -1033,7 +1218,6 @@
                     placeholder="Enter remarks or reason for rejection"><%= item.admin_remarks || '' %></textarea>
 
                 <div class="review-actions">
-
                     <button type="submit" class="save-btn">
                         Save Decision
                     </button>
@@ -1044,7 +1228,6 @@
                         onclick="closeReview('<%= item.renewal_id %>')">
                         Cancel
                     </button>
-
                 </div>
 
             </form>
@@ -1055,7 +1238,39 @@
 <% }); %>
 
 <script>
-    // Make the status counts work with keyboard Enter or Space.
+    // ADMIN PROFILE DRAWER
+
+    const profileToggle = document.getElementById('profileToggle');
+    const profileDrawer = document.getElementById('profileDrawer');
+    const profileOverlay = document.getElementById('profileOverlay');
+    const profileClose = document.getElementById('profileClose');
+
+    function openProfile() {
+        profileDrawer.classList.add('show');
+        profileOverlay.classList.add('show');
+
+        profileDrawer.setAttribute('aria-hidden', 'false');
+        profileToggle.setAttribute('aria-expanded', 'true');
+
+        document.body.classList.add('drawer-open');
+    }
+
+    function closeProfile() {
+        profileDrawer.classList.remove('show');
+        profileOverlay.classList.remove('show');
+
+        profileDrawer.setAttribute('aria-hidden', 'true');
+        profileToggle.setAttribute('aria-expanded', 'false');
+
+        document.body.classList.remove('drawer-open');
+    }
+
+    profileToggle.addEventListener('click', openProfile);
+    profileClose.addEventListener('click', closeProfile);
+    profileOverlay.addEventListener('click', closeProfile);
+
+    // STATUS COUNT KEYBOARD ACCESS
+
     function handleCountKey(event, orgName, status) {
         if (event.key === 'Enter' || event.key === ' ') {
             event.preventDefault();
@@ -1063,11 +1278,15 @@
         }
     }
 
-    // Get the renewal records rendered by EJS.
+    // APPLICATION DATA FROM EJS
+
     const renewalData = <%- JSON.stringify(allRenewals).replace(/</g, '\\u003c') %>;
 
-    // Show applications for the selected organization and status.
+    // SHOW APPLICATIONS BY ORGANIZATION AND STATUS
+
     function showStatus(orgName, selectedStatus) {
+        closeProfile();
+
         const applications = renewalData.filter(function(item) {
             const sameOrganization =
                 (item.org_name || '').trim().toLowerCase() ===
@@ -1125,7 +1344,9 @@
                     strong.textContent = label + ': ';
                     p.appendChild(strong);
                     p.appendChild(
-                        document.createTextNode(value || 'N/A')
+                        document.createTextNode(
+                            value == null || value === '' ? 'N/A' : String(value)
+                        )
                     );
 
                     card.appendChild(p);
@@ -1159,12 +1380,15 @@
         }
 
         document.getElementById('statusModal').style.display = 'flex';
-        document.body.style.overflow = 'hidden';
+        document.body.classList.add('popup-open');
     }
 
     function closeStatus() {
         document.getElementById('statusModal').style.display = 'none';
-        document.body.style.overflow = '';
+
+        if (!document.querySelector('.review-box[style*="display: flex"]')) {
+            document.body.classList.remove('popup-open');
+        }
     }
 
     function closeStatusOutside(event) {
@@ -1173,14 +1397,17 @@
         }
     }
 
-    // Open an individual application's review popup.
+    // OPEN AN INDIVIDUAL APPLICATION
+
     function openReview(id) {
+        closeProfile();
+
         const popup = document.getElementById('review-' + id);
 
         if (popup) {
             closeStatus();
             popup.style.display = 'flex';
-            document.body.style.overflow = 'hidden';
+            document.body.classList.add('popup-open');
         }
     }
 
@@ -1191,8 +1418,17 @@
             popup.style.display = 'none';
         }
 
-        if (!document.querySelector('.review-box[style*="display: flex"]')) {
-            document.body.style.overflow = '';
+        const anotherReviewOpen = Array.from(
+            document.querySelectorAll('.review-box')
+        ).some(function(box) {
+            return box.style.display === 'flex';
+        });
+
+        if (
+            !anotherReviewOpen &&
+            document.getElementById('statusModal').style.display !== 'flex'
+        ) {
+            document.body.classList.remove('popup-open');
         }
     }
 
@@ -1202,16 +1438,22 @@
         }
     }
 
-    // Close open popups when the user presses Escape.
+    // ESCAPE KEY SUPPORT
+
     document.addEventListener('keydown', function(event) {
         if (event.key === 'Escape') {
+            if (profileDrawer.classList.contains('show')) {
+                closeProfile();
+                return;
+            }
+
             closeStatus();
 
             document.querySelectorAll('.review-box').forEach(function(popup) {
                 popup.style.display = 'none';
             });
 
-            document.body.style.overflow = '';
+            document.body.classList.remove('popup-open');
         }
     });
 </script>

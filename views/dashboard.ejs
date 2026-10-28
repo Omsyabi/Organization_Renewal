@@ -466,6 +466,199 @@
             padding-bottom: 10px;
         }
 
+        
+/* CLICKABLE PROFILE BUTTON */
+.profile-button {
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--white);
+    font: inherit;
+    cursor: pointer;
+    padding: 7px 10px;
+    border-radius: 14px;
+    transition: 0.25s;
+    text-align: left;
+}
+
+.profile-button:hover {
+    background: rgba(255, 60, 172, 0.10);
+    border-color: rgba(255, 60, 172, 0.2);
+}
+
+.profile-arrow {
+    color: #ff70c5;
+    font-size: 18px;
+    margin-left: 8px;
+}
+
+/* DARK OVERLAY */
+.profile-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(5, 2, 12, 0.65);
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.3s;
+    z-index: 200;
+}
+
+.profile-overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* RIGHT PROFILE SIDEBAR */
+.profile-drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 360px;
+    max-width: 90%;
+    height: 100vh;
+    height: 100dvh;
+    overflow-y: auto;
+    padding: 28px;
+    background: #1b1028;
+    border-left: 1px solid var(--border);
+    box-shadow: -15px 0 50px rgba(0, 0, 0, 0.35);
+    z-index: 201;
+    transform: translateX(100%);
+    visibility: hidden;
+    transition: transform 0.3s ease, visibility 0.3s;
+}
+
+.profile-drawer.show {
+    transform: translateX(0);
+    visibility: visible;
+}
+
+.drawer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 35px;
+}
+
+.drawer-header h2 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 21px;
+}
+
+.drawer-close {
+    width: 36px;
+    height: 36px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--panel);
+    color: white;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+.drawer-close:hover {
+    background: rgba(255, 60, 172, 0.15);
+}
+
+.drawer-user {
+    text-align: center;
+    padding: 25px 15px;
+    border: 1px solid rgba(255, 60, 172, 0.18);
+    border-radius: 18px;
+    background: linear-gradient(
+        145deg,
+        rgba(255, 60, 172, 0.12),
+        rgba(139, 92, 246, 0.12)
+    );
+    margin-bottom: 30px;
+}
+
+.drawer-avatar {
+    width: 75px;
+    height: 75px;
+    margin: 0 auto 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 22px;
+    background: linear-gradient(135deg, var(--pink), var(--purple));
+    font-size: 34px;
+    box-shadow: 0 0 25px rgba(255, 60, 172, 0.2);
+}
+
+.drawer-user h3 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 19px;
+    margin-bottom: 7px;
+}
+
+.drawer-user p {
+    color: var(--muted);
+    font-size: 12px;
+    overflow-wrap: anywhere;
+    line-height: 1.7;
+}
+
+.drawer-label {
+    color: #ff70c5;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.8px;
+    margin-bottom: 15px;
+}
+
+.profile-info {
+    padding: 17px;
+    margin-bottom: 12px;
+    border: 1px solid var(--border);
+    border-radius: 13px;
+    background: rgba(255, 255, 255, 0.025);
+}
+
+.profile-info-label {
+    color: #a18cad;
+    font-size: 11px;
+    margin-bottom: 8px;
+}
+
+.profile-info-value {
+    color: var(--white);
+    font-size: 13px;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+    line-height: 1.6;
+}
+
+.drawer-logout {
+    display: block;
+    margin-top: 25px;
+    padding: 14px;
+    text-align: center;
+    text-decoration: none;
+    color: #ff82bd;
+    background: rgba(255, 60, 172, 0.08);
+    border: 1px solid rgba(255, 60, 172, 0.2);
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 700;
+    transition: 0.25s;
+}
+
+.drawer-logout:hover {
+    background: rgba(255, 60, 172, 0.16);
+}
+
+/* MOBILE */
+@media (max-width: 480px) {
+    .profile-drawer {
+        padding: 22px;
+    }
+
+    .profile-summary {
+        display: block;
+    }
+}
+
+
         /* RESPONSIVE */
         @media (max-width: 1100px) {
             .org-container {
@@ -587,10 +780,7 @@
                 <p>Keep your organization information updated and your renewal documents ready.</p>
             </div>
 
-            <a href="/logout" class="logout">
-                <span class="nav-icon">↪</span>
-                Log Out
-            </a>
+            
         </div>
     </aside>
 
@@ -601,13 +791,17 @@
                 Pages / <span>Dashboard</span>
             </div>
 
-            <div class="profile">
-                <div class="profile-avatar">👑</div>
-                <div>
-                    <div class="profile-name">Organization Member</div>
-                    <div class="profile-role">Portal Account</div>
-                </div>
+            
+            <button type="button" class="profile profile-button" id="profileToggle"
+            aria-label="Open profile" aria-expanded="false">
+            <div class="profile-avatar">👑</div>
+            <div class="profile-summary">
+            <div class="profile-name">My Account</div>
+            <div class="profile-role">View Profile</div>
             </div>
+<span class="profile-arrow">⌄</span>
+</button>
+
         </header>
 
         <main class="main">
@@ -751,6 +945,81 @@
 
         </main>
     </div>
+
+    
+<!-- PROFILE OVERLAY -->
+<div class="profile-overlay" id="profileOverlay"></div>
+
+<!-- PROFILE SIDEBAR -->
+<aside class="profile-drawer" id="profileDrawer"
+       aria-label="User profile" aria-hidden="true">
+
+    <div class="drawer-header">
+        <h2>My Profile</h2>
+        <button type="button" class="drawer-close" id="profileClose"
+                aria-label="Close profile">&times;</button>
+    </div>
+
+    <div class="drawer-user">
+        <div class="drawer-avatar">👑</div>
+        <h3>Organization Member</h3>
+        <p>Your OrgPort account</p>
+    </div>
+
+    <div class="drawer-label">ACCOUNT INFORMATION</div>
+
+    <div class="profile-info">
+        <div class="profile-info-label">Email Address</div>
+        <div class="profile-info-value"><%= email %></div>
+    </div>
+
+    <div class="profile-info">
+        <div class="profile-info-label">Account Type</div>
+        <div class="profile-info-value">Organization Member</div>
+    </div>
+
+    <div class="profile-info">
+        <div class="profile-info-label">School Year</div>
+        <div class="profile-info-value">2026–2027</div>
+    </div>
+
+    <a href="/logout" class="drawer-logout">↪ Log Out</a>
+
+</aside>
+
+<script>
+    const profileToggle = document.getElementById('profileToggle');
+    const profileDrawer = document.getElementById('profileDrawer');
+    const profileOverlay = document.getElementById('profileOverlay');
+    const profileClose = document.getElementById('profileClose');
+
+    function openProfile() {
+        profileDrawer.classList.add('show');
+        profileOverlay.classList.add('show');
+        profileDrawer.setAttribute('aria-hidden', 'false');
+        profileToggle.setAttribute('aria-expanded', 'true');
+    }
+
+    function closeProfile() {
+        profileDrawer.classList.remove('show');
+        profileOverlay.classList.remove('show');
+        profileDrawer.setAttribute('aria-hidden', 'true');
+        profileToggle.setAttribute('aria-expanded', 'false');
+    }
+
+    profileToggle.addEventListener('click', openProfile);
+    profileClose.addEventListener('click', closeProfile);
+    profileOverlay.addEventListener('click', closeProfile);
+
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            closeProfile();
+        }
+    });
+</script>
+</body>
+</html>
+
 
 </body>
 </html>

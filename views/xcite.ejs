@@ -529,9 +529,10 @@
                 </div>
             </div>
 
-            <a href="/dashboard" class="back-link">
-                ← Back to Dashboard
-            </a>
+            <a href="/dashboard?email=<%= encodeURIComponent(email || '') %>"
+                class="btn btn-secondary">
+                 ← Back to Dashboard
+             </a>
 
         </header>
 
